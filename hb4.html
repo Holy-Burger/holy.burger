@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holy Burger - Burgeri artizanali in Caransebes</title>
+  <meta name="description" content="Holy Burger - burgeri artizanali, suculenti si livrati cu gust in Caransebes. Comanda acum!">
+  <meta name="keywords" content="burger, burgeri, holy burger, burger Caransebes, burger artizanal, fast food, livrare burgeri">
+  <meta name="author" content="Holy Burger">
+  <meta property="og:title" content="Holy Burger - Burgeri artizanali in Caransebes" />
+  <meta property="og:description" content="Burgeri suculenti, artizanali si livrati rapid in Caransebes. Comanda acum!" />
+  <meta property="og:image" content="https://holyburger.ro/images/og-image.jpg" />
+  <meta property="og:url" content="https://holyburger.ro" />
+  <meta property="og:type" content="website" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff7f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #b71c1c;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .burger-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .burger-card:hover {
+      transform: scale(1.02);
+    }
+
+    .burger-card h2 {
+      margin: 0.5rem 0;
+      color: #b71c1c;
+    }
+
+    .order-form input {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.3rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .order-btn {
+      margin-top: 0.7rem;
+      background-color: #b71c1c;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .order-btn:hover {
+      background-color: #8e1414;
+    }
+
+    .about {
+      background: #fff0ec;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    footer {
+      background: #f4f4f4;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.95rem;
+      color: #555;
+      margin-top: 3rem;
+    }
+
+    a {
+      color: #b71c1c;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Holy Burger</h1>
+    <p>Burgeri artizanali cu gust divin - Caransebes</p>
+  </header>
+
+  <section class="section">
+    <div class="about">
+      <h2>Despre noi</h2>
+      <p>Suntem Holy Burger - un concept local din Caransebes cu burgeri artizanali preparati cu pasiune. Livram gust, calitate si bun vibe direct la tine acasa.</p>
+    </div>
+
+    <h2 style="margin-top: 4rem;">Meniul nostru</h2>
+    <div class="menu-grid" id="menu"></div>
+  </section>
+
+  <footer>
+    Locatie: Caransebes | Telefon: 0771 387 794  
+    <br>
+    Instagram: <a href="https://www.instagram.com/holy.burger.club" target="_blank" rel="noopener noreferrer">@holy.burger.club</a>  
+    <br><br>
+    © 2025 Holy Burger. Toate drepturile rezervate.
+  </footer>
+
+  <script>
+    const menu = [
+      { name: "Classic Burger", desc: "Carne de vita, salata, rosii, sos special" },
+      { name: "Cheese Burger", desc: "Carne de vita, cascaval, castraveti murati, sos" },
+      { name: "Holy Spicy", desc: "Carne picanta, jalapenos, sos iute, salata" }
+    ];
+
+    const container = document.getElementById('menu');
+
+    menu.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'burger-card';
+      card.innerHTML = `
+        <h2>${item.name}</h2>
+        <p>${item.desc}</p>
+        <form class="order-form" onsubmit="submitOrder(event, '${item.name}', ${index})">
+          <input type="text" id="name-${index}" placeholder="Nume complet" required>
+          <input type="text" id="phone-${index}" placeholder="Telefon" required pattern="\\d{10}">
+          <input type="text" id="address-${index}" placeholder="Adresa de livrare" required>
+          <button class="order-btn" type="submit">Comanda</button>
+        </form>
+      `;
+      container.appendChild(card);
+    });
+
+    function submitOrder(event, burgerName, index) {
+      event.preventDefault();
+      const name = document.getElementById(`name-${index}`).value.trim();
+      const phone = document.getElementById(`phone-${index}`).value.trim();
+      const address = document.getElementById(`address-${index}`).value.trim();
+
+      if (!name || !phone || !address) {
+        alert("Te rugam sa completezi toate campurile!");
+        return;
+      }
+
+      const text = `Salut! As dori sa comand un *${burgerName}* de la Holy Burger.%0A%0ANume: ${name}%0ATelefon: ${phone}%0AAdresa: ${address}`;
+      const whatsappNumber = "40771387794";
+      const url = `https://wa.me/${whatsappNumber}?text=${text}`;
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
