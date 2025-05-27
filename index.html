@@ -1,18 +1,10 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <link rel="icon" href="favicon.png" type="image/png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Holy Burger - Burgeri artizanali in Caransebes</title>
-  <meta name="description" content="Holy Burger - burgeri artizanali, suculenti si livrati cu gust in Caransebes. Comanda acum!">
-  <meta name="keywords" content="burger, burgeri, holy burger, burger Caransebes, burger artizanal, fast food, livrare burgeri">
-  <meta name="author" content="Holy Burger">
-  <meta property="og:title" content="Holy Burger - Burgeri artizanali in Caransebes" />
-  <meta property="og:description" content="Burgeri suculenti, artizanali si livrati rapid in Caransebes. Comanda acum!" />
-  <meta property="og:image" content="https://holyburger.ro/images/og-image.jpg" />
-  <meta property="og:url" content="https://holyburger.ro" />
-  <meta property="og:type" content="website" />
+  <link rel="icon" href="favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -21,37 +13,31 @@
       background-color: #fff7f5;
       color: #333;
     }
-
     header {
       background-color: #b71c1c;
       color: white;
       padding: 2rem 1rem;
       text-align: center;
     }
-
     header h1 {
       margin: 0;
       font-size: 3rem;
     }
-
     header p {
       font-size: 1.2rem;
       margin-top: 0.5rem;
     }
-
     .section {
       max-width: 1100px;
       margin: auto;
       padding: 2rem 1rem;
     }
-
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
-
     .burger-card {
       background: white;
       border-radius: 10px;
@@ -60,16 +46,40 @@
       text-align: center;
       transition: transform 0.3s ease;
     }
-
     .burger-card:hover {
       transform: scale(1.02);
     }
-
+    .burger-card img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
     .burger-card h2 {
       margin: 0.5rem 0;
       color: #b71c1c;
     }
-
+    .add-btn {
+      margin-top: 0.7rem;
+      background-color: #b71c1c;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .add-btn:hover {
+      background-color: #8e1414;
+    }
+    .order-form {
+      margin-top: 3rem;
+      background: #fff0ec;
+      padding: 2rem;
+      border-radius: 10px;
+    }
     .order-form input {
       width: 100%;
       padding: 0.6rem;
@@ -78,7 +88,6 @@
       border-radius: 6px;
       font-size: 0.95rem;
     }
-
     .order-btn {
       margin-top: 0.7rem;
       background-color: #b71c1c;
@@ -90,19 +99,9 @@
       cursor: pointer;
       transition: 0.3s ease;
     }
-
     .order-btn:hover {
       background-color: #8e1414;
     }
-
-    .about {
-      background: #fff0ec;
-      border-radius: 10px;
-      padding: 2rem;
-      text-align: center;
-      margin-top: 3rem;
-    }
-
     footer {
       background: #f4f4f4;
       text-align: center;
@@ -111,11 +110,14 @@
       color: #555;
       margin-top: 3rem;
     }
-
     a {
       color: #b71c1c;
       text-decoration: none;
       font-weight: 600;
+    }
+    .cart-preview {
+      font-weight: 600;
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -127,62 +129,101 @@
   </header>
 
   <section class="section">
-    <div class="about">
-      <h2>Despre noi</h2>
-      <p>Suntem Holy Burger - un concept local din Caransebes cu burgeri artizanali preparati cu pasiune. Livram gust, calitate si bun vibe direct la tine acasa.</p>
+    <h2>Meniul nostru</h2>
+    <div class="menu-grid" id="menu"></div>
+
+    <div class="cart-preview" id="cart-preview">
+      Comanda ta: <span id="cart-list">nimic inca</span>
     </div>
 
-    <h2 style="margin-top: 4rem;">Meniul nostru</h2>
-    <div class="menu-grid" id="menu"></div>
+    <form class="order-form" onsubmit="sendOrder(event)">
+      <h3>Finalizeaza comanda</h3>
+      <input type="text" id="name" placeholder="Nume complet" required>
+      <input type="text" id="phone" placeholder="Telefon" required pattern="\\d{10}">
+      <input type="text" id="address" placeholder="Adresa de livrare" required>
+      <button class="order-btn" type="submit">Trimite comanda pe WhatsApp</button>
+    </form>
   </section>
 
   <footer>
     Locatie: Caransebes | Telefon: 0771 387 794  
     <br>
-    Instagram: <a href="https://www.instagram.com/holy.burger.club" target="_blank" rel="noopener noreferrer">@holy.burger.club</a>  
+    Instagram: <a href="https://www.instagram.com/holy.burger.club" target="_blank">@holy.burger.club</a>  
     <br><br>
     © 2025 Holy Burger. Toate drepturile rezervate.
   </footer>
 
   <script>
     const menu = [
-      { name: "Classic Burger", desc: "Carne de vita, salata, rosii, sos special" },
-      { name: "Cheese Burger", desc: "Carne de vita, cascaval, castraveti murati, sos" },
-      { name: "Holy Spicy", desc: "Carne picanta, jalapenos, sos iute, salata" }
+      {
+        name: "Classic Burger",
+        desc: "Carne de vita, salata, rosii, sos special",
+        img: "burg1.png"
+      },
+      {
+        name: "Cheese Burger",
+        desc: "Carne de vita, cascaval, castraveti murati, sos",
+        img: "burg2.png"
+      },
+      {
+        name: "Holy Spicy",
+        desc: "Carne picanta, jalapenos, sos iute, salata",
+        img: "burg3.png"
+      }
     ];
 
+    const cart = [];
+
     const container = document.getElementById('menu');
+    const cartList = document.getElementById('cart-list');
+
+    function updateCartDisplay() {
+      if (cart.length === 0) {
+        cartList.textContent = "nimic inca";
+      } else {
+        cartList.textContent = cart.join(', ');
+      }
+    }
 
     menu.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'burger-card';
       card.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
         <h2>${item.name}</h2>
         <p>${item.desc}</p>
-        <form class="order-form" onsubmit="submitOrder(event, '${item.name}', ${index})">
-          <input type="text" id="name-${index}" placeholder="Nume complet" required>
-          <input type="text" id="phone-${index}" placeholder="Telefon" required pattern="\\d{10}">
-          <input type="text" id="address-${index}" placeholder="Adresa de livrare" required>
-          <button class="order-btn" type="submit">Comanda</button>
-        </form>
+        <button class="add-btn" onclick="addToCart('${item.name}')">Adauga in comanda</button>
       `;
       container.appendChild(card);
     });
 
-    function submitOrder(event, burgerName, index) {
-      event.preventDefault();
-      const name = document.getElementById(`name-${index}`).value.trim();
-      const phone = document.getElementById(`phone-${index}`).value.trim();
-      const address = document.getElementById(`address-${index}`).value.trim();
+    function addToCart(burgerName) {
+      cart.push(burgerName);
+      updateCartDisplay();
+    }
 
-      if (!name || !phone || !address) {
-        alert("Te rugam sa completezi toate campurile!");
+    function sendOrder(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+
+      if (cart.length === 0) {
+        alert("Adauga cel putin un burger in comanda.");
         return;
       }
 
-      const text = `Salut! As dori sa comand un *${burgerName}* de la Holy Burger.%0A%0ANume: ${name}%0ATelefon: ${phone}%0AAdresa: ${address}`;
+      if (!name || !phone || !address) {
+        alert("Completeaza toate campurile!");
+        return;
+      }
+
+      const burgerList = cart.join(', ');
+      const message = `Salut! As dori sa comand: ${burgerList}. Nume: ${name}, Telefon: ${phone}, Adresa: ${address}`;
+      const encodedMessage = encodeURIComponent(message);
       const whatsappNumber = "40771387794";
-      const url = `https://wa.me/${whatsappNumber}?text=${text}`;
+      const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
       window.open(url, '_blank');
     }
   </script>
