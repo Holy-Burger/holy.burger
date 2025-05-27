@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Holy Burger - Burgeri artizanali in Caransebes</title>
+  <title>Holy Burger - Burgeri artizanali în Caransebeș</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -23,10 +23,6 @@
       margin: 0;
       font-size: 3rem;
     }
-    header p {
-      font-size: 1.2rem;
-      margin-top: 0.5rem;
-    }
     .section {
       max-width: 1100px;
       margin: auto;
@@ -42,7 +38,7 @@
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      padding: 1.5rem;
+      padding: 1rem;
       text-align: center;
       transition: transform 0.3s ease;
     }
@@ -50,11 +46,8 @@
       transform: scale(1.02);
     }
     .burger-card img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
+      max-width: 100%;
       border-radius: 10px;
-      margin-bottom: 1rem;
     }
     .burger-card h2 {
       margin: 0.5rem 0;
@@ -65,7 +58,7 @@
       background-color: #b71c1c;
       color: white;
       border: none;
-      padding: 0.6rem 1.1rem;
+      padding: 0.6rem 1rem;
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
@@ -75,10 +68,10 @@
       background-color: #8e1414;
     }
     .order-form {
-      margin-top: 3rem;
       background: #fff0ec;
-      padding: 2rem;
+      padding: 1.5rem;
       border-radius: 10px;
+      margin-top: 3rem;
     }
     .order-form input {
       width: 100%;
@@ -89,7 +82,6 @@
       font-size: 0.95rem;
     }
     .order-btn {
-      margin-top: 0.7rem;
       background-color: #b71c1c;
       color: white;
       border: none;
@@ -98,6 +90,8 @@
       font-weight: 600;
       cursor: pointer;
       transition: 0.3s ease;
+      margin-top: 1rem;
+      width: 100%;
     }
     .order-btn:hover {
       background-color: #8e1414;
@@ -115,38 +109,30 @@
       text-decoration: none;
       font-weight: 600;
     }
-    .cart-preview {
-      font-weight: 600;
-      margin-top: 1rem;
-    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Holy Burger</h1>
-    <p>Burgeri artizanali cu gust divin - Caransebes</p>
+    <p>Burgeri artizanali cu gust divin - Caransebeș</p>
   </header>
 
   <section class="section">
     <h2>Meniul nostru</h2>
     <div class="menu-grid" id="menu"></div>
 
-    <div class="cart-preview" id="cart-preview">
-      Comanda ta: <span id="cart-list">nimic inca</span>
-    </div>
-
     <form class="order-form" onsubmit="sendOrder(event)">
-      <h3>Finalizeaza comanda</h3>
+      <h2>Finalizează comanda</h2>
       <input type="text" id="name" placeholder="Nume complet" required>
-      <input type="text" id="phone" placeholder="Telefon" required pattern="\\d{10}">
+      <input type="text" id="phone" placeholder="Telefon (ex: 0771387794)" required pattern="0\\d{9}">
       <input type="text" id="address" placeholder="Adresa de livrare" required>
       <button class="order-btn" type="submit">Trimite comanda pe WhatsApp</button>
     </form>
   </section>
 
   <footer>
-    Locatie: Caransebes | Telefon: 0771 387 794  
+    Locație: Caransebeș | Telefon: 0771 387 794  
     <br>
     Instagram: <a href="https://www.instagram.com/holy.burger.club" target="_blank">@holy.burger.club</a>  
     <br><br>
@@ -157,49 +143,39 @@
     const menu = [
       {
         name: "Classic Burger",
-        desc: "Carne de vita, salata, rosii, sos special",
-        img: "burg1.png"
+        desc: "Carne de vită, salată, roșii, sos special",
+        img: "burg1.jpg"
       },
       {
         name: "Cheese Burger",
-        desc: "Carne de vita, cascaval, castraveti murati, sos",
-        img: "burg2.png"
+        desc: "Carne de vită, cașcaval, castraveți murați, sos",
+        img: "burg2.jpg"
       },
       {
         name: "Holy Spicy",
-        desc: "Carne picanta, jalapenos, sos iute, salata",
-        img: "burg3.png"
+        desc: "Carne picantă, jalapenos, sos iute, salată",
+        img: "burg3.jpg"
       }
     ];
 
     const cart = [];
-
-    const container = document.getElementById('menu');
-    const cartList = document.getElementById('cart-list');
-
-    function updateCartDisplay() {
-      if (cart.length === 0) {
-        cartList.textContent = "nimic inca";
-      } else {
-        cartList.textContent = cart.join(', ');
-      }
-    }
+    const menuContainer = document.getElementById("menu");
 
     menu.forEach((item, index) => {
-      const card = document.createElement('div');
-      card.className = 'burger-card';
+      const card = document.createElement("div");
+      card.className = "burger-card";
       card.innerHTML = `
         <img src="${item.img}" alt="${item.name}">
         <h2>${item.name}</h2>
         <p>${item.desc}</p>
-        <button class="add-btn" onclick="addToCart('${item.name}')">Adauga in comanda</button>
+        <button class="add-btn" onclick="addToCart('${item.name}')">Adaugă în coș</button>
       `;
-      container.appendChild(card);
+      menuContainer.appendChild(card);
     });
 
-    function addToCart(burgerName) {
-      cart.push(burgerName);
-      updateCartDisplay();
+    function addToCart(name) {
+      cart.push(name);
+      alert(`${name} a fost adăugat în coș!`);
     }
 
     function sendOrder(event) {
@@ -210,12 +186,12 @@
       const address = document.getElementById('address').value.trim();
 
       if (cart.length === 0) {
-        alert("Adauga cel putin un burger in comanda.");
+        alert("Adaugă cel puțin un burger în coș.");
         return;
       }
 
       if (!name || !phone || !address) {
-        alert("Completeaza toate campurile!");
+        alert("Completează toate câmpurile!");
         return;
       }
 
