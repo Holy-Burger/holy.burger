@@ -93,6 +93,19 @@
 
     .cart ul li {
       margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background-color: #8e1414;
+      border: none;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
 
     .cart input {
@@ -140,7 +153,7 @@
       <ul id="cart-items"></ul>
       <p><strong>Total:</strong> <span id="total">0.00</span> lei</p>
       <input type="text" id="name" placeholder="Nume complet" required>
-      <input type="text" id="phone" placeholder="Telefon (ex: 0771387794)" required pattern="0[0-9]{9}" title="Introdu un numar valid care incepe cu 0 si are 10 cifre">
+      <input type="text" id="phone" placeholder="Telefon (ex: 0771387794)" required pattern="0[0-9]{9}" title="Numar invalid. Exemplu: 0771387794">
       <input type="text" id="address" placeholder="Adresa de livrare" required>
       <button class="order-btn" onclick="placeOrder()">Trimite comanda pe WhatsApp</button>
     </div>
@@ -186,7 +199,10 @@
       let total = 0;
       cart.forEach((item, index) => {
         const li = document.createElement("li");
-        li.textContent = `${item.name} - ${item.price.toFixed(2)} lei`;
+        li.innerHTML = `
+          ${item.name} - ${item.price.toFixed(2)} lei
+          <button class="remove-btn" onclick="removeFromCart(${index})">Sterge</button>
+        `;
         cartItems.appendChild(li);
         total += item.price;
       });
@@ -195,6 +211,11 @@
 
     function addToCart(index) {
       cart.push(menu[index]);
+      updateCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
       updateCart();
     }
 
@@ -217,7 +238,7 @@
       const address = document.getElementById("address").value.trim();
 
       if (!name || !phone || !address || !/^0[0-9]{9}$/.test(phone)) {
-        alert("Te rugam sa completezi corect toate campurile.");
+        alert("Completeaza corect toate campurile.");
         return;
       }
 
