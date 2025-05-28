@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Holy Burger - Burgeri artizanali în Caransebeș</title>
+  <title>Holy Burger - Burgeri artizanali in Caransebes</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -13,27 +13,32 @@
       background-color: #fff7f5;
       color: #333;
     }
+
     header {
       background-color: #b71c1c;
       color: white;
       padding: 2rem 1rem;
       text-align: center;
     }
+
     header h1 {
       margin: 0;
       font-size: 3rem;
     }
+
     .section {
       max-width: 1100px;
       margin: auto;
       padding: 2rem 1rem;
     }
+
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
+
     .burger-card {
       background: white;
       border-radius: 10px;
@@ -42,19 +47,25 @@
       text-align: center;
       transition: transform 0.3s ease;
     }
-    .burger-card:hover {
-      transform: scale(1.02);
-    }
+
     .burger-card img {
-      max-width: 100%;
+      width: 100%;
       border-radius: 10px;
+      height: 200px;
+      object-fit: cover;
     }
+
     .burger-card h2 {
-      margin: 0.5rem 0;
+      margin: 0.5rem 0 0.2rem;
       color: #b71c1c;
     }
+
+    .burger-card p {
+      margin: 0.2rem 0;
+    }
+
     .add-btn {
-      margin-top: 0.7rem;
+      margin-top: 0.6rem;
       background-color: #b71c1c;
       color: white;
       border: none;
@@ -62,26 +73,38 @@
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.3s ease;
     }
-    .add-btn:hover {
-      background-color: #8e1414;
-    }
-    .order-form {
+
+    .cart {
       background: #fff0ec;
-      padding: 1.5rem;
-      border-radius: 10px;
+      padding: 2rem;
       margin-top: 3rem;
+      border-radius: 10px;
     }
-    .order-form input {
+
+    .cart h3 {
+      margin-top: 0;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .cart input {
       width: 100%;
       padding: 0.6rem;
-      margin: 0.3rem 0;
+      margin: 0.4rem 0;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 0.95rem;
     }
+
     .order-btn {
+      margin-top: 1rem;
       background-color: #b71c1c;
       color: white;
       border: none;
@@ -89,13 +112,8 @@
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.3s ease;
-      margin-top: 1rem;
-      width: 100%;
     }
-    .order-btn:hover {
-      background-color: #8e1414;
-    }
+
     footer {
       background: #f4f4f4;
       text-align: center;
@@ -104,35 +122,32 @@
       color: #555;
       margin-top: 3rem;
     }
-    a {
-      color: #b71c1c;
-      text-decoration: none;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Holy Burger</h1>
-    <p>Burgeri artizanali cu gust divin - Caransebeș</p>
+    <p>Burgeri artizanali cu gust divin - Caransebes</p>
   </header>
 
   <section class="section">
     <h2>Meniul nostru</h2>
     <div class="menu-grid" id="menu"></div>
 
-    <form class="order-form" onsubmit="sendOrder(event)">
-      <h2>Finalizează comanda</h2>
+    <div class="cart" id="cart">
+      <h3>Cos comanda</h3>
+      <ul id="cart-items"></ul>
+      <p><strong>Total:</strong> <span id="total">0.00</span> lei</p>
       <input type="text" id="name" placeholder="Nume complet" required>
-      <input type="text" id="phone" placeholder="Telefon (ex: 0771387794)" required pattern="0\\d{9}">
+      <input type="text" id="phone" placeholder="Telefon (ex: 0771387794)" required pattern="0[0-9]{9}" title="Introdu un numar valid care incepe cu 0 si are 10 cifre">
       <input type="text" id="address" placeholder="Adresa de livrare" required>
-      <button class="order-btn" type="submit">Trimite comanda pe WhatsApp</button>
-    </form>
+      <button class="order-btn" onclick="placeOrder()">Trimite comanda pe WhatsApp</button>
+    </div>
   </section>
 
   <footer>
-    Locație: Caransebeș | Telefon: 0771 387 794  
+    Locatie: Caransebes | Telefon: 0771 387 794  
     <br>
     Instagram: <a href="https://www.instagram.com/holy.burger.club" target="_blank">@holy.burger.club</a>  
     <br><br>
@@ -143,23 +158,45 @@
     const menu = [
       {
         name: "Classic Burger",
-        desc: "Carne de vită, salată, roșii, sos special",
-        img: "burg1.jpg"
+        desc: "Carne vita, salata, rosii, sos special",
+        img: "burg1.jpg",
+        price: 28.00
       },
       {
         name: "Cheese Burger",
-        desc: "Carne de vită, cașcaval, castraveți murați, sos",
-        img: "burg2.jpg"
+        desc: "Carne vita, cascaval, castraveti murati, sos",
+        img: "burg2.jpg",
+        price: 30.00
       },
       {
         name: "Holy Spicy",
-        desc: "Carne picantă, jalapenos, sos iute, salată",
-        img: "burg3.jpg"
+        desc: "Carne picanta, jalapenos, sos iute, salata",
+        img: "burg3.jpg",
+        price: 30.00
       }
     ];
 
     const cart = [];
     const menuContainer = document.getElementById("menu");
+    const cartItems = document.getElementById("cart-items");
+    const totalEl = document.getElementById("total");
+
+    function updateCart() {
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - ${item.price.toFixed(2)} lei`;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+      totalEl.textContent = total.toFixed(2);
+    }
+
+    function addToCart(index) {
+      cart.push(menu[index]);
+      updateCart();
+    }
 
     menu.forEach((item, index) => {
       const card = document.createElement("div");
@@ -168,38 +205,30 @@
         <img src="${item.img}" alt="${item.name}">
         <h2>${item.name}</h2>
         <p>${item.desc}</p>
-        <button class="add-btn" onclick="addToCart('${item.name}')">Adaugă în coș</button>
+        <p><strong>${item.price.toFixed(2)} lei</strong></p>
+        <button class="add-btn" onclick="addToCart(${index})">Adauga in cos</button>
       `;
       menuContainer.appendChild(card);
     });
 
-    function addToCart(name) {
-      cart.push(name);
-      alert(`${name} a fost adăugat în coș!`);
-    }
+    function placeOrder() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
 
-    function sendOrder(event) {
-      event.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const address = document.getElementById('address').value.trim();
+      if (!name || !phone || !address || !/^0[0-9]{9}$/.test(phone)) {
+        alert("Te rugam sa completezi corect toate campurile.");
+        return;
+      }
 
       if (cart.length === 0) {
-        alert("Adaugă cel puțin un burger în coș.");
+        alert("Cosul este gol.");
         return;
       }
 
-      if (!name || !phone || !address) {
-        alert("Completează toate câmpurile!");
-        return;
-      }
-
-      const burgerList = cart.join(', ');
-      const message = `Salut! As dori sa comand: ${burgerList}. Nume: ${name}, Telefon: ${phone}, Adresa: ${address}`;
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappNumber = "40771387794";
-      const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      const burgerList = cart.map(item => item.name).join(", ");
+      const message = `Salut! As dori sa comand: ${burgerList}\n\nNume: ${name}\nTelefon: ${phone}\nAdresa: ${address}`;
+      const url = `https://wa.me/40771387794?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
     }
   </script>
